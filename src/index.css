@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98.0%;
+    --foreground: 240 5.9% 10.0%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10.0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10.0% 3.9%;
+    
+    /* Фирменные цвета ВоронаКар: глубокий синий и акценты */
+    --primary: 224 99% 41%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 10.0% 3.0%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    
+    --accent: 210 90% 94%;
+    --accent-foreground: 224 99% 25%;
+    
+    --destructive: 15 6.6% 56.3%;
+    --destructive-foreground: 0 0% 100%;
+    --warning: 38 92.1% 50.2%;
+    --warning-foreground: 0 0% 98%;
+    --success: 160 84.1% 39.4%;
+    --success-foreground: 0 0% 100%;
+    
+    --border: 240 5.9% 90.0%;
+    --input: 240 5.9% 90.0%;
+    --ring: 224 99% 41%;
+    --radius: 0.5rem;
+    --spacing: 0.75rem;
+
+    --shadow-retool-sm: 0px 2px 4px rgba(55, 55, 55, 0.08), 0px 1px 2px rgba(0, 0, 0, 0.12);
+    --shadow-retool-md: 0px 6px 12px rgba(55, 55, 55, 0.08), 0px 2px 6px rgba(0, 0, 0, 0.12);
+    --shadow-retool-lg: 0px 10px 20px rgba(55, 55, 55, 0.08), 0px 4px 10px rgba(0, 0, 0, 0.12);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Специальные стили для красивой и чистой печати в PDF */
+@media print {
+  body {
+    visibility: hidden;
+    background: white !important;
+  }
+  
+  /* Показываем только область самой сметы */
+  #estimate-print-area,
+  #estimate-print-area * {
+    visibility: visible;
+  }
+  
+  #estimate-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 16px 20px;
+    background: white !important;
+  }
+  
+  /* Принудительно показываем фирменную шапку при печати */
+  .print-only-banner {
+    display: block !important;
+    visibility: visible !important;
+    width: 100%;
+    margin-bottom: 14px;
+  }
+  
+  /* Прячем абсолютно все интерактивные кнопки, инпуты и панели настроек */
+  .no-print,
+  button,
+  input[type="checkbox"],
+  .ui-elements-to-hide {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  
+  /* Гарантируем, что фоновые цвета категорий (пастельные плашки) отобразятся на бумаге */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Делаем невидимыми подсказки-плейсхолдеры в полях ввода */
+  input::placeholder,
+  textarea::placeholder {
+    color: transparent !important;
+    opacity: 0 !important;
+  }
+  
+  /* Настройки формата страницы А4 */
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+}
+
+/* По умолчанию прячем печатный баннер с экрана монитора */
+.print-only-banner {
+  display: none;
+}
