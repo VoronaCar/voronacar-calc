@@ -168,3 +168,35 @@ export function buildSnapshot(state: CalculatorState): EstimateSnapshot {
     estimateNote: state.estimateNote
   };
 }
+import { db } from "../firebase";
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
+
+// Функция загрузки актуального прайс-листа из Firebase Cloud
+export async function getPriceList(): Promise<PriceRow[]> {
+  try {
+    const docRef = doc(db, "system", "pricelist");
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists() && docSnap.data().prices) {
+      return docSnap.data().prices as PriceRow[];
+    }
+    
+    // Если база в облаке совсем пустая (первый запуск) — возвращаем дефолтный пустой массив, 
+    // чтобы приложение не падало, а дало сохранить первый прайс
+    return [];
+  } catch (err) {
+    console.error("Ошибка Firebase getPriceList:", err);
+    return [];
+  }
+}
+
+// Функция сохранения прайс-листа в облако
+export async function updatePriceList(newPrices: PriceRow[]): Promise<boolean> {
+  try {
+    const docRef = doc(db, "system", "pricelist");
+    await setDoc(docRef, { prices: newPrices }, { merge: true });
+    return true;
+  } catch (err) {
+    console.error("Ошибка Firebase updatePriceList:", err);
+    return false;
+  }
+}
