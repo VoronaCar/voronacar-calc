@@ -1,18 +1,8 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import { fileURLToPath } from "url";
-import path from "path";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  // Это важнейшая настройка, чтобы калькулятор правильно работал на GitHub Pages
-  base: "/voronacar-calc/",
-});
+  base: '/voronacar-calc/', // Указываем Vite точное имя репозитория на GitHub Pages
+})
